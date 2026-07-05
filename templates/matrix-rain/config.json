@@ -1,0 +1,79 @@
+{
+  "id": "matrix-rain",
+  "name": "Matrix Rain",
+  "description": "Hiệu ứng mưa code Matrix kết hợp với hạt chữ đếm ngược",
+  "price": "Free",
+  "previewImage": "/templates/matrix-rain/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang",
+      "type": "text",
+      "default": "LOVE YOU"
+    },
+    {
+      "name": "matrix_text",
+      "label": "Chữ rơi Matrix (Mưa code)",
+      "type": "text",
+      "default": "I L O V E Y O U"
+    },
+    {
+      "name": "matrix_color",
+      "label": "Màu mưa Matrix",
+      "type": "color",
+      "default": "#ff69b4"
+    },
+    {
+      "name": "text_color",
+      "label": "Màu hạt chữ (Chữ đếm ngược)",
+      "type": "color",
+      "default": "#ffffff"
+    },
+    {
+      "name": "sentences",
+      "label": "Các câu chúc bằng hạt sáng",
+      "type": "text-array",
+      "default": [
+       "3",
+       "2",
+       "1"
+
+      ]
+    },
+    {
+      "name": "final_text",
+      "label": "Chữ cuối cùng hiện ra cùng trái tim hồng",
+      "type": "text",
+      "default": "Anh yêu em"
+    },
+    {
+      "name": "final_text_color",
+      "label": "Màu chữ cuối cùng",
+      "type": "color",
+      "default": "#ffffff"
+    },
+    {
+      "name": "final_text_size",
+      "label": "Cỡ chữ cuối cùng (px)",
+      "type": "number",
+      "default": 40
+    },
+    {
+      "name": "stable_duration",
+      "label": "Thời gian giữ nguyên chữ (150-500)",
+      "type": "number",
+      "default": 200
+    },
+    {
+      "name": "forming_speed",
+      "label": "Tốc độ bay của hạt sáng (0.1 - 0.5)",
+      "type": "text",
+      "default": "0.1"
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

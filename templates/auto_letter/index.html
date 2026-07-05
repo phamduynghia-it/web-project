@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>__TITLE__</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <!-- MUSIC TOGGLE -->
+        <div id="musicToggle" class="music-btn">🔊</div>
+
+        <audio id="bgMusic" src="__BG_MUSIC__" loop></audio>
+        <canvas id="bg"></canvas>
+        <canvas id="hearts"></canvas>
+        <!-- CARD THƯ -->
+        <div class="card" id="letterCard">
+            <h2>__TITLE__</h2>
+            <span class="corner-heart left"></span>
+            <span class="corner-heart right"></span>
+            <!-- chữ gõ trực tiếp trên card -->
+            <p id="typing" class="content"></p>
+
+            <div class="heart-btn">
+                <span class="center-heart"></span>
+            </div>
+        </div>
+
+        <!-- SLIDE ẢNH -->
+        <div class="card hidden" id="slideCard">
+            <h2>__TITLE__</h2>
+
+            <div class="photo">
+                <img id="slideImg" src="images/a1.jpg" />
+            </div>
+            <div class="controls">
+                <button onclick="prev()">❮</button>
+                <button>❤️</button>
+                <button onclick="next()">❯</button>
+            </div>
+        </div>
+
+        <script>
+            window.CONFIG = {
+                message: `__MESSAGE__`,
+                speed: "__SPEED__",
+                images: '__IMAGES__'
+            };
+        </script>
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "id": "auto_letter",
+  "name": "Auto Letter",
+  "description": "Hiệu ứng viết thư tự động và chạy slide ảnh",
+  "price": "Free",
+  "previewImage": "/templates/auto_letter/images/a1.jpg",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang & thư",
+      "type": "text",
+      "default": "Mừng ngày quốc tế phụ nữ 8.3 💖"
+    },
+    {
+      "name": "message",
+      "label": "Nội dung bức thư",
+      "type": "textarea",
+      "default": ""
+    },
+    {
+      "name": "speed",
+      "label": "Tốc độ gõ chữ (ms)",
+      "type": "number",
+      "default": 55
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    },
+    {
+      "name": "images",
+      "label": "Ảnh chạy trên slide (Tối đa số ảnh bạn muốn)",
+      "type": "image-array",
+      "default": []
+    }
+  ]
+}

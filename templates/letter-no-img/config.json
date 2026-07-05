@@ -1,0 +1,32 @@
+{
+  "id": "letter-no-img",
+  "name": "Letter No Image",
+  "description": "Hiển thị lời chúc thư tín đơn giản, không có ảnh minh họa",
+  "price": "Free",
+  "previewImage": "/templates/letter-no-img/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang (Tab browser)",
+      "type": "text",
+      "default": "Love Letter"
+    },
+    {
+      "name": "message",
+      "label": "Đoạn lời chúc",
+      "type": "textarea",
+      "default": ""
+    },
+    {
+      "name": "font_size",
+      "label": "Cỡ chữ (px)",
+      "type": "number",
+      "default": 16
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

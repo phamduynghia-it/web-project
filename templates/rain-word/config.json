@@ -1,0 +1,42 @@
+{
+  "id": "rain-word",
+  "name": "Rain Word",
+  "description": "Hiệu ứng chữ và trái tim rơi, với âm nhạc nhẹ nhàng",
+  "price": "Free",
+  "previewImage": "/templates/rain-word/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang (Tab browser)",
+      "type": "text",
+      "default": "love you"
+    },
+    {
+      "name": "messages",
+      "label": "Các từ xuất hiện (Mỗi dòng 1 từ/câu ngắn)",
+      "type": "text-array",
+      "default": [
+        "I",
+        "Love",
+        "You"
+      ]
+    },
+    {
+      "name": "speed",
+      "label": "Tốc độ rơi (1-20)",
+      "type": "number",
+      "default": 7
+    },
+    {
+      "name": "color",
+      "label": "Màu chữ (Mã HEX)",
+      "type": "color",
+      "default": "#ee66a6"
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

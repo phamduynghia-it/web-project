@@ -1,0 +1,37 @@
+{
+  "id": "letter-img",
+  "name": "Happy Birthday",
+  "description": "Hiển thị lời chúc thư tín kèm hiệu ứng thả tim",
+  "price": "Free",
+  "previewImage": "/templates/letter-img/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang (Tab browser)",
+      "type": "text",
+      "default": "Love Letter"
+    },
+    {
+      "name": "message",
+      "label": "Đoạn lời chúc",
+      "type": "textarea",
+      "default": "Valentine đầu tiên của chúng mình.\nCảm ơn em vì đã đến và làm anh hạnh phúc mỗi ngày.\nChúc em một ngày thật ngọt ngào, như chính em đối với anh vậy!\nThương em nhiều ❤"
+    },
+    {
+      "name": "font_size",
+      "label": "Cỡ chữ (px)",
+      "type": "number",
+      "default": 16
+    },
+    {
+      "name": "background_img",
+      "label": "Ảnh minh họa bên trong thư (nếu có)",
+      "type": "image"
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

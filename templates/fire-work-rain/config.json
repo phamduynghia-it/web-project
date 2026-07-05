@@ -1,0 +1,53 @@
+{
+  "id": "fire-work-rain",
+  "name": "Firework Rain",
+  "description": "Hiệu ứng pháo hoa rơi và chữ xếp từ các hạt sáng",
+  "price": "Free",
+  "previewImage": "/templates/fire-work-rain/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang",
+      "type": "text",
+      "default": "LOVE YOU"
+    },
+    {
+      "name": "firework_color",
+      "label": "Màu pháo hoa",
+      "type": "color",
+      "default": "#ffffff"
+    },
+    {
+      "name": "text_color",
+      "label": "Màu chữ",
+      "type": "color",
+      "default": "#ffffff"
+    },
+    {
+      "name": "sentences",
+      "label": "Các dòng chữ (sử dụng \\n để xuống dòng nếu muốn)",
+      "type": "text-array",
+      "default": [
+        "LOVE YOU",
+        "MÃI BÊN NHAU\nNHÉ"
+      ]
+    },
+    {
+      "name": "stable_duration",
+      "label": "Thời gian giữ nguyên chữ (150-500)",
+      "type": "number",
+      "default": 150
+    },
+    {
+      "name": "forming_speed",
+      "label": "Tốc độ bay của hạt sáng (0.1 - 0.5)",
+      "type": "text",
+      "default": "0.1"
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
