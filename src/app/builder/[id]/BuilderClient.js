@@ -150,7 +150,7 @@ export default function BuilderClient({ templateId, config }) {
                   <div>
                     <input
                       type="file"
-                      accept={field.type === "image" ? "image/*" : "audio/*"}
+                      accept={field.type === "image" ? "image/*" : "audio/*, video/*, .mp3, .wav, .m4a, .mp4"}
                       onChange={(e) => handleFileChange(field.name, e.target.files[0])}
                       className="block w-full text-sm text-gray-400
                         file:mr-4 file:py-2.5 file:px-4
