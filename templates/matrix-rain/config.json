@@ -43,7 +43,7 @@
     {
       "name": "final_text",
       "label": "Chữ cuối cùng hiện ra cùng trái tim hồng",
-      "type": "text",
+      "type": "textarea",
       "default": "Anh yêu em"
     },
     {

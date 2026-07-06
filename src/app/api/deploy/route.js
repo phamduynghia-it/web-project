@@ -2,6 +2,9 @@ import { Octokit } from "octokit";
 import fs from "fs/promises";
 import path from "path";
 
+export const maxDuration = 60; // Tăng timeout Vercel lên tối đa 60s cho tài khoản Hobby
+
+
 // Hàm đệ quy đọc tất cả file trong folder
 async function getFiles(dir, files = []) {
   const fileList = await fs.readdir(dir);

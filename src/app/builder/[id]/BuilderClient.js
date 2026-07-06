@@ -18,24 +18,64 @@ export default function BuilderClient({ templateId, config }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (name, file) => {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      handleChange(name, reader.result); // Base64 string
-    };
-    reader.readAsDataURL(file);
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      // Nếu không phải ảnh (ví dụ nhạc/video), trả về base64 bình thường
+      if (!file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+          
+          // Giới hạn kích thước tối đa 1200px
+          const MAX_SIZE = 1200;
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Nén với chất lượng 0.7 cho jpeg
+          resolve(canvas.toDataURL("image/jpeg", 0.7));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
-  const handleArrayFileChange = (name, index, file) => {
+  const handleFileChange = async (name, file) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const newArray = [...(formData[name] || [])];
-      newArray[index] = reader.result;
-      handleChange(name, newArray);
-    };
-    reader.readAsDataURL(file);
+    const compressedBase64 = await compressImage(file);
+    handleChange(name, compressedBase64);
+  };
+
+  const handleArrayFileChange = async (name, index, file) => {
+    if (!file) return;
+    const compressedBase64 = await compressImage(file);
+    const newArray = [...(formData[name] || [])];
+    newArray[index] = compressedBase64;
+    handleChange(name, newArray);
   };
 
   const handleArrayChange = (name, index, value) => {
@@ -68,14 +108,25 @@ export default function BuilderClient({ templateId, config }) {
         }),
       });
 
-      const result = await response.json();
-      if (result.success) {
-        setRepoLink(result.url);
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        const result = await response.json();
+        if (result.success) {
+          setRepoLink(result.url);
+        } else {
+          alert("Lỗi: " + result.message);
+        }
       } else {
-        alert("Lỗi: " + result.message);
+        if (response.status === 413) {
+          throw new Error("Dung lượng file quá lớn (vượt quá giới hạn 4.5MB). Vui lòng chọn ảnh có kích thước nhỏ hơn hoặc ít ảnh lại.");
+        } else if (response.status === 504) {
+          throw new Error("Máy chủ phản hồi quá lâu (Timeout). Quá trình deploy mất nhiều thời gian, vui lòng thử lại.");
+        } else {
+          throw new Error(`Lỗi hệ thống: ${response.status} - ${response.statusText}`);
+        }
       }
     } catch (err) {
-      alert("Đã xảy ra lỗi hệ thống khi deploy.");
+      alert(err.message || "Đã xảy ra lỗi hệ thống khi deploy.");
     } finally {
       setLoading(false);
     }
