@@ -183,7 +183,7 @@ export async function POST(req) {
       let content = await fs.readFile(filePath);
       let encoding = 'base64';
       
-      if (relativePath === 'index.html') {
+      if (relativePath === 'index.html' || relativePath === 'config.js') {
         let html = content.toString('utf-8');
         
         // Replace variables

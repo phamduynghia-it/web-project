@@ -1,0 +1,48 @@
+{
+  "id": "heart-beat",
+  "name": "Heart Beat",
+  "description": "Món quà yêu thương với trái tim 3D và những lời nhắn, hình ảnh bay bổng.",
+  "price": "Free",
+  "previewImage": "/templates/heart-beat/preview.png",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề trang và thiệp",
+      "type": "text",
+      "default": "Yêu Em 💖"
+    },
+    {
+      "name": "popup_message",
+      "label": "Lời nhắn hiển thị trong phần thiệp",
+      "type": "textarea",
+      "default": "💖 Gửi đến em người anh thương nhất! 💝 Cảm ơn em đã đến bên anh, cùng anh đi qua những ngày tháng đẹp nhất. Anh yêu em thật nhiều, mãi mãi bên nhau em nhé! 💕💗💞"
+    },
+    {
+      "name": "messages",
+      "label": "Các câu chữ bay lên xung quanh trái tim 3D",
+      "type": "text-array",
+      "default": [
+        "Anh yêu em",
+        "Luôn vui vẻ nhé",
+        "Mãi bên nhau"
+      ]
+    },
+    {
+      "name": "images",
+      "label": "Các hình ảnh bay lên (tối đa 6 ảnh)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "heart_color",
+      "label": "Màu của trái tim 3D",
+      "type": "color",
+      "default": "#fd9595"
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
