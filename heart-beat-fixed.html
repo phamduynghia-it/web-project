@@ -264,16 +264,6 @@
       #heartlove-loading::before,
       #heartlove-loading::after { animation: none !important; }
     }
-
-    /* Chặn hiệu ứng chuyển cảnh của 3D Heart */
-    body.letter-open canvas {
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      transform: none !important;
-    }
-    #letterReveal {
-      display: none !important;
-    }
   </style>
 </head>
 
@@ -365,8 +355,63 @@
     initWithData(CONFIG);
   </script>
 
-  <!-- Envelope scene removed -->
+  <!-- Envelope scene (hidden until heart is tapped) -->
+  <div class="envelope-scene" id="envelopeScene">
+    <div class="main-content">
+      <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="card" id="card">
+          <div class="card-inner">
+            <div class="card-cover">
+              <h1 class="card-title">
+                <span class="card-title-secondary">Dear</span>
+                <span class="card-title-main">My Love</span>
+                <span class="card-title-secondary">&#10084;</span>
+              </h1>
+            </div>
+            <div class="card-back"></div>
+          </div>
+          <div class="card-body">
+            <p class="card-greeting">Gửi anh yêu,</p>
+            <p class="card-message"></p>
+            <p class="card-ending">Yêu anh nhiều lắm!</p>
+          </div>
+        </div>
 
+        <div class="envelope" id="envelope">
+          <div class="envelope-back"></div>
+          <div class="envelope-lid"></div>
+          <div class="envelope-front"></div>
+          <div class="heart-seal"></div>
+        </div>
+      </div>
+
+      <p class="click-instruction" id="clickInstruction" style="opacity:0">Nhấn vào thư để mở lại 💌</p>
+    </div>
+
+    <div class="flying-hearts-container" id="flyingHearts"></div>
+
+    <div id="wishModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="polaroid-card">
+          <div class="polaroid-image"><img src="" alt="Love"></div>
+          <div class="polaroid-text">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <p class="signature"></p>
+          </div>
+          <div class="heart-close-btn" id="heartCloseBtn" onclick="onHeartTap()">
+            <img src="./heart.png" alt="Heart">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flying-images-container" id="flyingImages"></div>
+  </div>
+
+  <script src="./assets/envelope.js?v=202507" defer></script>
   <script src="./assets/index.main.js?v=202407"></script>
   <!-- Chờ _heartloveReady (nếu có) trước khi khởi tạo scripts.js, sau đó ẩn loading -->
   <script type="module">
@@ -387,6 +432,7 @@
       requestAnimationFrame(hideHeartloveLoading);
     });
   </script>
+
 	<!-- Cơ chế bảo mật (Chống soi code) -->
 	<script src="./anti-devtools.js"></script>
 </body>

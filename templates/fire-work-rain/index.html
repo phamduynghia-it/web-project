@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
     <meta charset="utf-8" />
 
@@ -160,7 +160,7 @@
             }
 
             function launchSalvo() {
-                let shots = Math.floor(Math.random() * 3) + 2; // 2â€“4 quáº£
+                let shots = Math.floor(Math.random() * 3) + 2; // 2–4 quả
                 const types = ["classic", "star", "rain"];
 
                 for (let i = 0; i < shots; i++) {
@@ -208,11 +208,11 @@
 
             var currentTextIndex = 0;
             var countdownStage = "idle"; // idle | forming | holding | dispersing
-            var stableTime = 0; // biáº¿n Ä‘áº¿m thá»i gian
+            var stableTime = 0; // biến đếm thời gian
 
-            // --- Cáº¤U HÃŒNH THá»œI GIAN á»ž ÄÃ‚Y ---  //config
-            var STABLE_DURATION = __STABLE_DURATION__; // TÄƒng lÃªn 500 Ä‘á»ƒ chá»¯ giá»¯ nÃ©t lÃ¢u hÆ¡n (táº§m 8-9 giÃ¢y)
-            var FORMING_SPEED = __FORMING_SPEED__; // TÄƒng tá»‘c Ä‘á»™ bay tá»« 0.1 lÃªn 0.35 Ä‘á»ƒ giáº£m thá»i gian bá»‹ vá»¡
+            // --- CẤU HÌNH THỜI GIAN Ở ĐÂY ---  //config
+            var STABLE_DURATION = __STABLE_DURATION__; // Tăng lên 500 để chữ giữ nét lâu hơn (tầm 8-9 giây)
+            var FORMING_SPEED = __FORMING_SPEED__; // Tăng tốc độ bay từ 0.1 lên 0.35 để giảm thời gian bị vỡ
             // -------------------------------
 
             var countdownHoldTime = 0;
@@ -223,7 +223,7 @@
             var started = false;
             var pinkboardStarted = false;
             var particleSize = 3;
-            var particleDensity = 6; // Giáº£m nháº¹ máº­t Ä‘á»™ Ä‘á»ƒ Ä‘á»¡ lag náº¿u mÃ¡y yáº¿u
+            var particleDensity = 6; // Giảm nhẹ mật độ để đỡ lag nếu máy yếu
 
             function initCountdownCanvas() {
                 var canvas = document.getElementById("countdownCanvas");
@@ -289,7 +289,7 @@
                     ) {
                         if (data[(y * tempCanvas.width + x) * 4 + 3] > 128) {
                             countdownParticles.push({
-                                x: Math.random() * window.innerWidth, // Vá»‹ trÃ­ ban Ä‘áº§u ngáº«u nhiÃªn
+                                x: Math.random() * window.innerWidth, // Vị trí ban đầu ngẫu nhiên
                                 y: Math.random() * window.innerHeight,
                                 targetX:
                                     x -
@@ -321,32 +321,32 @@
 
                 countdownParticles.forEach((p) => {
                     if (countdownStage === "forming") {
-                        // TÄƒng tá»‘c Ä‘á»™ bay vá» Ä‘Ã­ch Ä‘á»ƒ giáº£m thá»i gian "vá»¡"
+                        // Tăng tốc độ bay về đích để giảm thời gian "vỡ"
                         p.vx = (p.targetX - p.x) * FORMING_SPEED;
                         p.vy = (p.targetY - p.y) * FORMING_SPEED;
 
-                        // Cáº­p nháº­t vá»‹ trÃ­
+                        // Cập nhật vị trí
                         p.x += p.vx;
                         p.y += p.vy;
 
-                        // Kiá»ƒm tra xem Ä‘Ã£ Ä‘áº¿n nÆ¡i chÆ°a (sai sá»‘ nhá» hÆ¡n 1px)
+                        // Kiểm tra xem đã đến nơi chưa (sai số nhỏ hơn 1px)
                         if (
                             Math.abs(p.targetX - p.x) > 1 ||
                             Math.abs(p.targetY - p.y) > 1
                         ) {
                             done = false;
                         } else {
-                            // Náº¿u Ä‘Ã£ ráº¥t gáº§n, gÃ¡n cá»©ng vá»‹ trÃ­ Ä‘á»ƒ chá»¯ sáº¯c nÃ©t
+                            // Nếu đã rất gần, gán cứng vị trí để chữ sắc nét
                             p.x = p.targetX;
                             p.y = p.targetY;
                         }
                     } else if (countdownStage === "stable") {
-                        // Khi Ä‘Ã£ á»•n Ä‘á»‹nh, khÃ³a cá»©ng vá»‹ trÃ­ tuyá»‡t Ä‘á»‘i, khÃ´ng rung láº¯c
+                        // Khi đã ổn định, khóa cứng vị trí tuyệt đối, không rung lắc
                         p.x = p.targetX;
                         p.y = p.targetY;
                     }
-                    // Giai Ä‘oáº¡n dispersing (tan rÃ£) náº¿u muá»‘n thÃªm hiá»‡u á»©ng ná»• thÃ¬ code á»Ÿ Ä‘Ã¢y
-                    // Hiá»‡n táº¡i code cÅ© chá»‰ chuyá»ƒn text luÃ´n nÃªn ko cáº§n xá»­ lÃ½
+                    // Giai đoạn dispersing (tan rã) nếu muốn thêm hiệu ứng nổ thì code ở đây
+                    // Hiện tại code cũ chỉ chuyển text luôn nên ko cần xử lý
 
                     countdownCtx.beginPath();
                     countdownCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -355,14 +355,14 @@
                 });
 
                 if (countdownStage === "forming" && done) {
-                    countdownStage = "stable"; // Chuyá»ƒn sang cháº¿ Ä‘á»™ giá»¯ nÃ©t
+                    countdownStage = "stable"; // Chuyển sang chế độ giữ nét
                     stableTime = 0;
                 }
 
                 if (countdownStage === "stable") {
-                    // ðŸš« Náº¾U LÃ€ CÃ‚U CUá»I â†’ GIá»® MÃƒI, KHÃ”NG TAN
+                    // 🚫 NẾU LÀ CÂU CUỐI → GIỮ MÃI, KHÔNG TAN
                     if (currentTextIndex === countdownTexts.length - 1) {
-                        // khÃ³a vÄ©nh viá»…n á»Ÿ tráº¡ng thÃ¡i stable
+                        // khóa vĩnh viễn ở trạng thái stable
                         return requestAnimationFrame(updateCountdownParticles);
                     }
 
@@ -390,10 +390,10 @@
                 requestAnimationFrame(updateCountdownParticles);
             }
         </script>
-        <!-- ================= COUNTDOWN TEXT (GIá»® NGUYÃŠN) ================= -->
-        <!-- (Giá»¯ nguyÃªn toÃ n bá»™ code chá»¯ báº¡n gá»­i â€“ KHÃ”NG Sá»¬A) -->
-        <!-- ðŸ‘‰ VÃ¬ quÃ¡ dÃ i nÃªn mÃ¬nh KHÃ”NG láº·p láº¡i á»Ÿ Ä‘Ã¢y -->
-        <!-- ðŸ‘‰ Báº¡n giá»¯ nguyÃªn toÃ n bá»™ script countdownParticles cÅ© -->
+        <!-- ================= COUNTDOWN TEXT (GIỮ NGUYÊN) ================= -->
+        <!-- (Giữ nguyên toàn bộ code chữ bạn gửi – KHÔNG SỬA) -->
+        <!-- 👉 Vì quá dài nên mình KHÔNG lặp lại ở đây -->
+        <!-- 👉 Bạn giữ nguyên toàn bộ script countdownParticles cũ -->
 
         <!-- ================= CLICK START ================= -->
 
@@ -408,14 +408,14 @@
                 audio.volume = 0.8;
                 audio.currentTime = 0;
 
-                // ðŸ”“ UNLOCK + PLAY TRONG CÃ™NG GESTURE
+                // 🔓 UNLOCK + PLAY TRONG CÙNG GESTURE
                 audio
                     .play()
                     .then(() => {
                         // OK cho Android + iOS
                     })
                     .catch(() => {
-                        console.log("Audio bá»‹ cháº·n");
+                        console.log("Audio bị chặn");
                     });
 
                 // START TEXT
@@ -428,9 +428,7 @@
             document.addEventListener("touchstart", startLove, { once: true });
             document.addEventListener("click", startLove, { once: true });
         </script>
-    
-	<!-- Cơ chế bảo mật (Chống soi code) -->
+    	<!-- Cơ chế bảo mật (Chống soi code) -->
 	<script src="./anti-devtools.js"></script>
 </body>
 </html>
-

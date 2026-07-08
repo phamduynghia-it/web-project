@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -22,18 +22,18 @@
 
 <script src="config.js"></script>
 <script>
-    // CÃ i Ä‘áº·t src cho audio tá»« config
+    // Cài đặt src cho audio từ config
     const bgm = document.getElementById('bgm');
     if (typeof musicPath !== 'undefined') {
         bgm.src = musicPath;
     }
 
-    // PhÃ¡t nháº¡c khi ngÆ°á»i dÃ¹ng tÆ°Æ¡ng tÃ¡c (click hoáº·c cháº¡m)
+    // Phát nhạc khi người dùng tương tác (click hoặc chạm)
     function playMusic() {
         if (bgm.paused) {
             bgm.play().catch(console.error);
         }
-        // Gá»¡ sá»± kiá»‡n sau khi Ä‘Ã£ phÃ¡t Ä‘á»ƒ khÃ´ng bá»‹ gá»i láº¡i nhiá»u láº§n
+        // Gỡ sự kiện sau khi đã phát để không bị gọi lại nhiều lần
         document.removeEventListener('click', playMusic);
         document.removeEventListener('touchstart', playMusic);
     }
