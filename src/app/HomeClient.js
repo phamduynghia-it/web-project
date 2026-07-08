@@ -29,6 +29,28 @@ export default function HomeClient({ templates }) {
           </div>
         </header>
 
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-center text-gray-300 mb-8">Công cụ tải nhạc TikTok (Hỗ trợ lấy link nhạc)</h2>
+          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg p-10 text-center flex flex-col items-center justify-center">
+            <div className="w-16 h-16 bg-[#ff0050]/20 rounded-full flex items-center justify-center mb-6">
+              <i className="fa-brands fa-tiktok text-3xl text-[#ff0050]"></i>
+            </div>
+            <p className="text-gray-300 mb-2 text-xl font-semibold">Tải nhạc nền từ video TikTok</p>
+            <p className="text-gray-400 mb-8 max-w-lg">
+              Các trang web tải nhạc đều chặn hiển thị nhúng (iframe) để bảo mật. Bạn vui lòng bấm nút bên dưới để mở công cụ lấy nhạc trong một tab mới nhé!
+            </p>
+            <a 
+              href="https://snaptt.me/vi/tai-tiktok-mp3/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-[#ff0050] hover:bg-[#d90044] text-white font-bold rounded-full transition-all flex items-center gap-3 text-lg shadow-[0_0_20px_rgba(255,0,80,0.3)] hover:shadow-[0_0_30px_rgba(255,0,80,0.5)] hover:-translate-y-1"
+            >
+              Mở trang SnapTT để tải nhạc
+              <i className="fa-solid fa-arrow-up-right-from-square text-sm ml-1"></i>
+            </a>
+          </div>
+        </section>
+
         <section>
           <h2 className="text-2xl font-semibold text-center text-gray-300 mb-8">Tất cả mẫu</h2>
           {filteredTemplates.length > 0 ? (
