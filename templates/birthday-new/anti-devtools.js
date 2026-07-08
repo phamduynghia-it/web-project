@@ -39,23 +39,4 @@
         }
     };
     document.head.appendChild(script);
-
-    // 5. Fallback tự viết phòng khi thư viện ngoài bị lỗi mạng không tải được
-    setInterval(function () {
-        var start = performance.now();
-        debugger;
-        var end = performance.now();
-        if (end - start > 100) {
-            window.location.replace("https://google.com");
-        }
-    }, 100);
-
-    setInterval(function () {
-        var threshold = 160;
-        var widthDiff = window.outerWidth - window.innerWidth;
-        var heightDiff = window.outerHeight - window.innerHeight;
-        if (widthDiff > threshold || heightDiff > threshold) {
-            window.location.replace("https://google.com");
-        }
-    }, 500);
 })();
