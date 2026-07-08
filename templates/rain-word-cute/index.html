@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+  <!-- PLYR -->
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+  <style>
+    body { margin: 0; background: #000; color:#fff; font-weight:100; touch-action:none }
+  </style>
+</head>
+<body>
+
+
+<audio id="bgm" loop preload="auto"></audio>
+
+<script src="config.js"></script>
+<script>
+    // CÃ i Ä‘áº·t src cho audio tá»« config
+    const bgm = document.getElementById('bgm');
+    if (typeof musicPath !== 'undefined') {
+        bgm.src = musicPath;
+    }
+
+    // PhÃ¡t nháº¡c khi ngÆ°á»i dÃ¹ng tÆ°Æ¡ng tÃ¡c (click hoáº·c cháº¡m)
+    function playMusic() {
+        if (bgm.paused) {
+            bgm.play().catch(console.error);
+        }
+        // Gá»¡ sá»± kiá»‡n sau khi Ä‘Ã£ phÃ¡t Ä‘á»ƒ khÃ´ng bá»‹ gá»i láº¡i nhiá»u láº§n
+        document.removeEventListener('click', playMusic);
+        document.removeEventListener('touchstart', playMusic);
+    }
+
+    document.addEventListener('click', playMusic);
+    document.addEventListener('touchstart', playMusic);
+</script>
+
+<div id="threejs-canvas"></div>
+
+
+<script src="script.js"></script>
+
+
+	<!-- Cơ chế bảo mật (Chống soi code) -->
+	<script src="./anti-devtools.js"></script>
+</body>
+</html>

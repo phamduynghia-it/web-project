@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -27,7 +27,7 @@
                 text-align: center;
             "
         >
-            Nhấn vào màn hình để bắt đầu
+            Nháº¥n vÃ o mÃ n hÃ¬nh Ä‘á»ƒ báº¯t Ä‘áº§u
         </div>
 
         <div id="child" style="display: none">
@@ -118,11 +118,11 @@
 
             var currentTextIndex = 0;
             var countdownStage = "idle"; // idle | forming | holding | dispersing
-            var stableTime = 0; // biến đếm thời gian
+            var stableTime = 0; // biáº¿n Ä‘áº¿m thá»i gian
             
-            // --- CẤU HÌNH THỜI GIAN Ở ĐÂY ---  /* (config) */
-            var STABLE_DURATION = __STABLE_DURATION__; // Tăng lên 500 để chữ giữ nét lâu hơn (tầm 8-9 giây)
-            var FORMING_SPEED = __FORMING_SPEED__; // Tăng tốc độ bay từ 0.1 lên 0.35 để giảm thời gian bị vỡ
+            // --- Cáº¤U HÃŒNH THá»œI GIAN á»ž ÄÃ‚Y ---  /* (config) */
+            var STABLE_DURATION = __STABLE_DURATION__; // TÄƒng lÃªn 500 Ä‘á»ƒ chá»¯ giá»¯ nÃ©t lÃ¢u hÆ¡n (táº§m 8-9 giÃ¢y)
+            var FORMING_SPEED = __FORMING_SPEED__; // TÄƒng tá»‘c Ä‘á»™ bay tá»« 0.1 lÃªn 0.35 Ä‘á»ƒ giáº£m thá»i gian bá»‹ vá»¡
             // -------------------------------
 
             var countdownHoldTime = 0;
@@ -133,7 +133,7 @@
             var started = false;
             var pinkboardStarted = false;
             var particleSize = 3;
-            var particleDensity = 6; // Giảm nhẹ mật độ để đỡ lag nếu máy yếu
+            var particleDensity = 6; // Giáº£m nháº¹ máº­t Ä‘á»™ Ä‘á»ƒ Ä‘á»¡ lag náº¿u mÃ¡y yáº¿u
 
             function initCountdownCanvas() {
                 var canvas = document.getElementById("countdownCanvas");
@@ -199,7 +199,7 @@
                     ) {
                         if (data[(y * tempCanvas.width + x) * 4 + 3] > 128) {
                             countdownParticles.push({
-                                x: Math.random() * window.innerWidth, // Vị trí ban đầu ngẫu nhiên
+                                x: Math.random() * window.innerWidth, // Vá»‹ trÃ­ ban Ä‘áº§u ngáº«u nhiÃªn
                                 y: Math.random() * window.innerHeight,
                                 targetX:
                                     x -
@@ -231,29 +231,29 @@
 
                 countdownParticles.forEach((p) => {
                     if (countdownStage === "forming") {
-                        // Tăng tốc độ bay về đích để giảm thời gian "vỡ"
+                        // TÄƒng tá»‘c Ä‘á»™ bay vá» Ä‘Ã­ch Ä‘á»ƒ giáº£m thá»i gian "vá»¡"
                         p.vx = (p.targetX - p.x) * FORMING_SPEED; 
                         p.vy = (p.targetY - p.y) * FORMING_SPEED;
                         
-                        // Cập nhật vị trí
+                        // Cáº­p nháº­t vá»‹ trÃ­
                         p.x += p.vx;
                         p.y += p.vy;
 
-                        // Kiểm tra xem đã đến nơi chưa (sai số nhỏ hơn 1px)
+                        // Kiá»ƒm tra xem Ä‘Ã£ Ä‘áº¿n nÆ¡i chÆ°a (sai sá»‘ nhá» hÆ¡n 1px)
                         if (Math.abs(p.targetX - p.x) > 1 || Math.abs(p.targetY - p.y) > 1) {
                             done = false;
                         } else {
-                            // Nếu đã rất gần, gán cứng vị trí để chữ sắc nét
+                            // Náº¿u Ä‘Ã£ ráº¥t gáº§n, gÃ¡n cá»©ng vá»‹ trÃ­ Ä‘á»ƒ chá»¯ sáº¯c nÃ©t
                             p.x = p.targetX;
                             p.y = p.targetY;
                         }
                     } else if (countdownStage === "stable") {
-                        // Khi đã ổn định, khóa cứng vị trí tuyệt đối, không rung lắc
+                        // Khi Ä‘Ã£ á»•n Ä‘á»‹nh, khÃ³a cá»©ng vá»‹ trÃ­ tuyá»‡t Ä‘á»‘i, khÃ´ng rung láº¯c
                         p.x = p.targetX;
                         p.y = p.targetY;
                     } 
-                    // Giai đoạn dispersing (tan rã) nếu muốn thêm hiệu ứng nổ thì code ở đây
-                    // Hiện tại code cũ chỉ chuyển text luôn nên ko cần xử lý
+                    // Giai Ä‘oáº¡n dispersing (tan rÃ£) náº¿u muá»‘n thÃªm hiá»‡u á»©ng ná»• thÃ¬ code á»Ÿ Ä‘Ã¢y
+                    // Hiá»‡n táº¡i code cÅ© chá»‰ chuyá»ƒn text luÃ´n nÃªn ko cáº§n xá»­ lÃ½
                     
                     countdownCtx.beginPath();
                     countdownCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -262,13 +262,13 @@
                 });
 
                 if (countdownStage === "forming" && done) {
-                    countdownStage = "stable"; // Chuyển sang chế độ giữ nét
+                    countdownStage = "stable"; // Chuyá»ƒn sang cháº¿ Ä‘á»™ giá»¯ nÃ©t
                     stableTime = 0;
                 }
 
                 if (countdownStage === "stable") {
                     stableTime++;
-                    // Giữ nguyên trạng thái này trong STABLE_DURATION frame
+                    // Giá»¯ nguyÃªn tráº¡ng thÃ¡i nÃ y trong STABLE_DURATION frame
                     if (stableTime > STABLE_DURATION) {
                         countdownStage = "dispersing";
                     }
@@ -535,7 +535,7 @@
                 })(document.getElementById("pinkboard"));
             }
 
-            // 启动倒计时
+            // å¯åŠ¨å€’è®¡æ—¶
             window.onload = function () {
                 initCountdownCanvas();
                 createTextParticles(countdownTexts[0]);
@@ -548,17 +548,17 @@
                 if (audio.paused) {
                     audio.play().catch((err) => {
                         console.log(
-                            "Autoplay bị chặn, cần user interaction:",
+                            "Autoplay bá»‹ cháº·n, cáº§n user interaction:",
                             err,
                         );
                     });
                 }
-                // Sau khi play thì bỏ event đi để không gọi lại
+                // Sau khi play thÃ¬ bá» event Ä‘i Ä‘á»ƒ khÃ´ng gá»i láº¡i
                 document.removeEventListener("click", initMusic);
                 document.removeEventListener("touchstart", initMusic);
             }
 
-            // Lắng nghe sự kiện chạm/click đầu tiên
+            // Láº¯ng nghe sá»± kiá»‡n cháº¡m/click Ä‘áº§u tiÃªn
             document.addEventListener("click", initMusic);
             document.addEventListener("touchstart", initMusic);
         </script>
@@ -568,13 +568,16 @@
                 location.reload();
             });
 
-            // Phòng trường hợp một số máy không hỗ trợ orientationchange
+            // PhÃ²ng trÆ°á»ng há»£p má»™t sá»‘ mÃ¡y khÃ´ng há»— trá»£ orientationchange
             window.addEventListener("resize", function () {
                 if (window.innerWidth > window.innerHeight) {
-                    // đang ở chế độ ngang
+                    // Ä‘ang á»Ÿ cháº¿ Ä‘á»™ ngang
                     location.reload();
                 }
             });
         </script>
-    </body>
+    
+	<!-- Cơ chế bảo mật (Chống soi code) -->
+	<script src="./anti-devtools.js"></script>
+</body>
 </html>

@@ -1,0 +1,38 @@
+{
+  "id": "birthday-new",
+  "name": "Birthday New",
+  "description": "Món quà sinh nhật đặc biệt với bánh kem và thư chúc mừng.",
+  "price": "Free",
+  "previewImage": "/thumbnails/birthday-new.jpg",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề lá thư",
+      "type": "text",
+      "default": "Gửi Duy Nghĩa"
+    },
+    {
+      "name": "message",
+      "label": "Nội dung lá thư",
+      "type": "textarea",
+      "default": "Chúc mừng sinh nhật nha! Chúc bạn tuổi mới nhiều niềm vui, lúc nào cũng cười toe toét. Cảm ơn vì đã luôn ở bên cạnh mình."
+    },
+    {
+      "name": "cake_text",
+      "label": "Chữ trên bánh kem",
+      "type": "text",
+      "default": "Happy Birthday!"
+    },
+    {
+      "name": "images",
+      "label": "Ảnh kỉ niệm (Tối đa 6 ảnh, hiển thị ở tường ảnh và khối lập phương)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

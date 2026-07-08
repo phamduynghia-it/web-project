@@ -1,0 +1,23 @@
+{
+  "id": "rain-word-cute",
+  "name": "Rain Word Cute",
+  "description": "Hiệu ứng mưa chữ 3D dễ thương",
+  "price": "Free",
+  "previewImage": "/templates/rain-word-cute/preview.png",
+  "fields": [
+    {
+      "name": "texts",
+      "label": "Các dòng chữ rơi",
+      "type": "text-array",
+      "default": [
+        "anh yêu em",
+        "Bảo Hân"
+      ]
+    },
+    {
+      "name": "bg_music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
