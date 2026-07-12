@@ -1,0 +1,44 @@
+{
+  "id": "tinhcau",
+  "name": "Tinh Cầu Tình Yêu",
+  "description": "Thiệp 3D tinh cầu tình yêu tuyệt đẹp với lời chúc bay lơ lửng.",
+  "price": "Free",
+  "previewImage": "/thumbnails/tinhcau.jpg",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề chính",
+      "type": "text",
+      "default": "Gửi Người Anh Yêu 💖"
+    },
+    {
+      "name": "popupMessage",
+      "label": "Lời nhắn chính",
+      "type": "textarea",
+      "default": "💖 Gửi em — người con gái khiến mỗi ngày của anh trở nên đáng nhớ. Cảm ơn em vì đã xuất hiện, đã yêu thương và đồng hành cùng anh. Dù tương lai phía trước có gì, anh chỉ mong được nắm tay em đi tiếp. Mãi yêu em 💝💕"
+    },
+    {
+      "name": "messages",
+      "label": "Các lời chúc nhỏ (Hiển thị xoay quanh tinh cầu)",
+      "type": "text-array",
+      "default": [
+        "Gửi Em 💖💕",
+        "Người Anh Yêu Nhất 💝",
+        "Mãi Bên Em 💖",
+        "Em là tất cả đối với anh",
+        "Mãi yêu"
+      ]
+    },
+    {
+      "name": "images",
+      "label": "Ảnh kỉ niệm (5 ảnh xoay quanh tinh cầu)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
