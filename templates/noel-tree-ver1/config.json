@@ -1,0 +1,35 @@
+{
+  "id": "noel-tree-ver1",
+  "name": "Cây Thông Noel V1",
+  "description": "Thiệp 3D cây thông Noel xoay tròn rực rỡ với lời chúc và hình ảnh.",
+  "price": "Free",
+  "previewImage": "/thumbnails/noel-tree-ver1.jpg",
+  "fields": [
+    {
+      "name": "title",
+      "label": "Tiêu đề chính",
+      "type": "text",
+      "default": "Merry Christmas"
+    },
+    {
+      "name": "messages",
+      "label": "Các lời chúc nhỏ (Hiển thị xoay quanh cây thông)",
+      "type": "text-array",
+      "default": [
+        "Giáng sinh vui vẻ nhé",
+        "Luôn mỉm cười"
+      ]
+    },
+    {
+      "name": "images",
+      "label": "Ảnh kỉ niệm (Các ảnh xoay quanh cây thông)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
