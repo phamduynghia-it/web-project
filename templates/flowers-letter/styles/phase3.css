@@ -1,0 +1,541 @@
+/* ===== Phase 3 — Popup (after card opens) + Finale (float-up with neon) ===== */
+
+/* Dim backdrop covering the whole #phase-2 view */
+.popup-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 120;
+    display: grid;
+    place-items: center;
+    background: rgba(40, 20, 25, 0);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease-in-out), background-color 0.5s var(--ease-in-out);
+    padding: 16px;
+    /* Allow scrolling if popup is taller than viewport on small screens */
+    overflow-y: auto;
+}
+
+.popup-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    background: rgba(40, 20, 25, 0.55);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.popup-overlay.is-leaving { opacity: 0; }
+
+/* ===== Popup card — modelled on images/popup.png =====
+   Cream/beige body, subtle warm border, deep drop shadow.
+   Header strip + horizontal body (photo left, text right). */
+.popup {
+    position: relative;
+    width: min(560px, 94vw);
+    max-height: 92vh;
+    background: linear-gradient(180deg, #f8e5cf 0%, #f1d4b8 100%);
+    border: 1.5px solid #b9787c;
+    border-radius: 16px;
+    box-shadow:
+        0 24px 60px rgba(60, 20, 30, 0.55),
+        0 4px 12px rgba(60, 20, 30, 0.35),
+        inset 0 1px 0 rgba(255, 240, 220, 0.7);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(193, 74, 93, 0.45) transparent;
+    transform: scale(0.7) translateY(20px);
+    opacity: 0;
+    transition: transform 0.55s var(--ease-out-strong), opacity 0.45s var(--ease-in-out);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popup::-webkit-scrollbar {
+    width: 6px;
+}
+.popup::-webkit-scrollbar-thumb {
+    background: rgba(193, 74, 93, 0.45);
+    border-radius: 3px;
+}
+.popup::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.popup-overlay.is-visible .popup {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.popup-overlay.is-leaving .popup {
+    transform: scale(0.92) translateY(-8px);
+    opacity: 0;
+    transition: transform 0.4s var(--ease-in-out), opacity 0.4s var(--ease-in-out);
+}
+
+/* Close X button — top-right corner, sits above the header band */
+.popup-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 5;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(160, 80, 90, 0.45);
+    background: rgba(255, 255, 255, 0.92);
+    color: #c14a5d;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    box-shadow: 0 3px 8px rgba(60, 20, 30, 0.28);
+    transition: transform 0.18s var(--ease-out-strong), background 0.18s ease, box-shadow 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.popup-close svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.popup-close:hover,
+.popup-close:focus-visible {
+    background: #fff;
+    transform: scale(1.08) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(60, 20, 30, 0.4);
+    outline: none;
+}
+
+.popup-close:active {
+    transform: scale(0.94);
+}
+
+/* Decorative header band — lighter cream strip with title + icons */
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px 8px;
+    background: linear-gradient(180deg, #fef0d8 0%, #f6dcc0 100%);
+    border-bottom: 1px solid rgba(160, 80, 90, 0.35);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.popup-title {
+    margin: 0;
+    font-family: var(--font-script);
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: #c14a5d;
+    text-shadow: 0 1px 0 rgba(255, 240, 220, 0.6);
+    padding: 0 4px;
+}
+
+.popup-deco {
+    font-size: 18px;
+    color: #d96e80;
+    opacity: 0.95;
+    line-height: 1;
+}
+
+/* Body — horizontal: photo (left) + text (right). Photo is locked in
+   aspect ratio + centered; text fills the rest with comfortable padding. */
+.popup-body {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    padding: 20px 22px 16px;
+}
+
+.popup-photo {
+    flex: 0 0 38%;
+    align-self: center;
+    aspect-ratio: 4 / 5;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #c98ea0;
+    box-shadow: 0 6px 14px rgba(60, 20, 30, 0.28);
+    background: #fff;
+}
+
+.popup-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.popup-text {
+    flex: 1;
+    min-width: 0;
+    color: #8a4452;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-style: italic;
+    line-height: 1.5;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.popup-text p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    color: #8a4452;
+}
+
+.popup-text p:first-child {
+    font-size: 27px;
+    color: #c14a5d;
+    font-weight: 600;
+}
+
+/* Typewriter: each character lives in a <span> the JS injects after the
+   popup opens. Hidden by default; the JS un-hides them one at a time.
+   The empty trailing caret span gives a subtle blink while typing. */
+.popup-text .pt-char {
+    opacity: 0;
+    transition: opacity 0.06s linear;
+}
+
+.popup-text .pt-char.is-on {
+    opacity: 1;
+}
+
+/* Caret on the currently-typing paragraph */
+.popup-text .pt-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 2px;
+    background: currentColor;
+    vertical-align: -2px;
+    animation: pt-caret-blink 0.7s steps(2, end) infinite;
+    opacity: 0.85;
+}
+
+@keyframes pt-caret-blink {
+    50% { opacity: 0; }
+}
+
+/* Heart action button — bottom of the popup, click to dismiss + finale.
+   Stays hidden until the typewriter finishes (JS adds .is-ready on .popup),
+   then fades in + starts beating to invite the click. */
+.popup-heart {
+    display: block;
+    margin: 4px auto 16px;
+    padding: 6px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+    animation: popup-heart-beat 1.4s ease-in-out infinite;
+    transition:
+        transform 0.18s var(--ease-out-strong),
+        filter    0.18s ease,
+        opacity   0.6s  ease,
+        scale     0.6s  var(--ease-out-strong);
+    filter: drop-shadow(0 4px 10px rgba(193, 74, 93, 0.35));
+    opacity: 0;
+    scale: 0.7;
+    pointer-events: none;
+}
+
+.popup.is-ready .popup-heart {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto;
+}
+
+.popup-heart img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.popup-heart:hover,
+.popup-heart:focus-visible {
+    transform: scale(1.15);
+    filter: drop-shadow(0 6px 16px rgba(193, 74, 93, 0.6));
+    outline: none;
+    animation-play-state: paused;
+}
+
+.popup-heart:active {
+    transform: scale(0.92);
+}
+
+@keyframes popup-heart-beat {
+    0%, 100% { transform: scale(1);    }
+    18%      { transform: scale(1.12); }
+    32%      { transform: scale(1);    }
+    50%      { transform: scale(1.06); }
+    70%      { transform: scale(1);    }
+}
+
+/* ===== Finale — love photos + flowers float up from below =====
+   Photos wear a single-colour hot-pink neon halo that breathes (dim ↔
+   bloom) while they drift slowly upward through a 3-point sway curve. */
+.finale-stage {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 90;
+    contain: layout style paint;
+}
+
+.finale-item {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    --fx-start: 0px;
+    --fx-end:   0px;
+    --fy:       110vh;
+    --frot:     0deg;
+    --sway:     0px;
+    --fdur:     8s;
+    --fdelay:   0s;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation:
+        finale-rise var(--fdur) cubic-bezier(0.33, 0.05, 0.4, 1) var(--fdelay) forwards,
+        finale-fade var(--fdur) linear var(--fdelay) forwards;
+}
+
+/* Photo — single-colour soft-red neon tube + halo, gently breathing.
+   The neon stays one warm light-red shade; only intensity pulses (dim ↔
+   bright) so it reads as a steady glowing love-letter frame. */
+.finale-item--photo {
+    width: var(--photo-size, 200px);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 3px solid #ff7878;
+    aspect-ratio: 4 / 5;
+    /* Sits behind the heart cluster (z-index 4) so the heart silhouette
+       stays clean while photos drift past in the background. Still above
+       drifters (z-index 2) so the neon halo reads clearly. */
+    z-index: 3;
+    background: #fff;
+    /* 3 animations: rise + fade (per finale-item) + neon-pulse (per photo) */
+    animation:
+        finale-rise  var(--fdur) cubic-bezier(0.33, 0.05, 0.4, 1) var(--fdelay) forwards,
+        finale-fade  var(--fdur) linear var(--fdelay) forwards,
+        neon-breathe 2.8s ease-in-out infinite;
+}
+
+.finale-item--photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+    /* Tiny inset white edge so the neon tube sits flush against the photo
+       instead of touching colourful pixels directly */
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.finale-item--flower {
+    width: var(--flower-size, 140px);
+    height: var(--flower-size, 140px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+    /* Add a gentle breathing pulse so flowers feel alive as they drift up.
+       Individual `scale` property composes cleanly with the `transform`
+       shorthand used by finale-rise (translate + rotate). */
+    animation:
+        finale-rise  var(--fdur) cubic-bezier(0.33, 0.05, 0.4, 1) var(--fdelay) forwards,
+        finale-fade  var(--fdur) linear var(--fdelay) forwards,
+        flower-pulse var(--pulse-dur, 4s) ease-in-out var(--pulse-delay, 0s) infinite;
+}
+
+@keyframes flower-pulse {
+    0%, 100% { scale: 1; }
+    50%      { scale: 1.05; }
+}
+
+/* ===== Heart-formation flowers — 2-phase + permanent hold =====
+   Phase A — RISE     ( 0 % →  67 % /  0 → 6 s) : float up from bottom
+   Phase B — CONVERGE (67 % → 100 % /  6 → 9 s) : drift to heart point
+   Then `forwards` fill keeps the flower locked at its heart-x/heart-y
+   indefinitely, while heart-pulse infinite continues the heartbeat. */
+.finale-item--heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--flower-size, 100px);
+    height: var(--flower-size, 100px);
+    margin-left: calc(-1 * var(--flower-size, 100px) / 2);
+    margin-top:  calc(-1 * var(--flower-size, 100px) / 2);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0;
+    /* Heart cluster sits ABOVE photos (z 3) and drifters (z 2) so the
+       silhouette reads clearly. */
+    z-index: 4;
+    will-change: transform, opacity;
+    animation:
+        heart-form  9s cubic-bezier(0.45, 0.05, 0.4, 0.95) var(--heart-delay, 0ms) forwards,
+        heart-pulse 1.6s ease-in-out calc(9s + var(--heart-delay, 0ms)) infinite;
+}
+
+@keyframes heart-form {
+    /* Phase A — rise from bottom */
+    0%   { transform: translate(var(--start-x), var(--start-y));   opacity: 0; }
+    5%   { transform: translate(var(--start-x), var(--start-y));   opacity: var(--max-opacity, 1); }
+    67%  { transform: translate(var(--mid-x),   var(--mid-y));     opacity: var(--max-opacity, 1); }
+    /* Phase B — converge into the heart shape (final, held by `forwards`) */
+    100% { transform: translate(var(--heart-x), var(--heart-y));   opacity: var(--max-opacity, 1); }
+}
+
+@keyframes heart-pulse {
+    0%, 100% { scale: 1;    }
+    50%      { scale: 1.07; }
+}
+
+/* Rise with a 3-point horizontal wobble (in → out → in) so the item drifts
+   like it's caught in a slow breeze instead of going straight up. The
+   easeInOut curve on the parent animation keeps the Y motion smooth. */
+@keyframes finale-rise {
+    0% {
+        transform:
+            translate(calc(-50% + var(--fx-start)), 0)
+            rotate(0deg);
+    }
+    33% {
+        transform:
+            translate(
+                calc(-50% + var(--fx-start) + (var(--fx-end) - var(--fx-start)) * 0.33 + var(--sway)),
+                calc(-1 * var(--fy) * 0.33)
+            )
+            rotate(calc(var(--frot) * 0.33));
+    }
+    66% {
+        transform:
+            translate(
+                calc(-50% + var(--fx-start) + (var(--fx-end) - var(--fx-start)) * 0.66 - var(--sway)),
+                calc(-1 * var(--fy) * 0.66)
+            )
+            rotate(calc(var(--frot) * 0.66));
+    }
+    100% {
+        transform:
+            translate(calc(-50% + var(--fx-end)), calc(-1 * var(--fy)))
+            rotate(var(--frot));
+    }
+}
+
+@keyframes finale-fade {
+    0%   { opacity: 0; }
+    10%  { opacity: var(--max-opacity, 1); }
+    85%  { opacity: var(--max-opacity, 1); }
+    100% { opacity: 0; }
+}
+
+/* Single-colour neon breath — soft warm red tube + halo, intensity pulses
+   between resting glow (#ff7878) and bloom (#ff9e9e). Multi-layer shadow
+   stack (hard 6/14px + soft 28/55px) reads as a classic neon-sign glow
+   instead of a fuzzy blur. */
+@keyframes neon-breathe {
+    0%, 100% {
+        border-color: #ff7878;
+        box-shadow:
+            0 0 6px  rgba(255, 120, 120, 0.95),
+            0 0 14px rgba(255, 120, 120, 0.85),
+            0 0 28px rgba(255, 120, 120, 0.55),
+            0 0 55px rgba(255, 120, 120, 0.30);
+    }
+    50% {
+        border-color: #ff9e9e;
+        box-shadow:
+            0 0 10px rgba(255, 158, 158, 1),
+            0 0 24px rgba(255, 158, 158, 0.95),
+            0 0 46px rgba(255, 120, 120, 0.75),
+            0 0 88px rgba(255, 120, 120, 0.45);
+    }
+}
+
+/* Tablet / large phone — keep horizontal layout, font scales slightly down */
+@media (max-width: 700px) {
+    .popup { width: min(500px, 94vw); }
+    .popup-title  { font-size: 30px; }
+    .popup-deco   { font-size: 16px; }
+    .popup-body   { padding: 18px 18px 14px; gap: 16px; }
+    .popup-photo  { flex-basis: 40%; }
+    .popup-text   { gap: 10px; }
+    .popup-text p { font-size: 21px; }
+    .popup-text p:first-child { font-size: 23px; }
+    .popup-heart  { width: 58px; height: 58px; margin: 4px auto 14px; }
+    .popup-close  { width: 32px; height: 32px; }
+}
+
+/* Phone — stack vertically (photo on top, text full width below) so the
+   long paragraph reads as a full-width love letter, not a narrow column.
+   word-break + overflow-wrap on .popup-text already keep long Vietnamese
+   diacritics from overflowing the popup edge. */
+@media (max-width: 480px) {
+    .popup        { width: min(420px, 94vw); }
+    .popup-title  { font-size: 26px; }
+    .popup-deco   { font-size: 14px; }
+    .popup-header { gap: 4px; padding: 9px 12px 8px; }
+    .popup-body {
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 18px 12px;
+        gap: 14px;
+    }
+    .popup-photo {
+        flex-basis: auto;
+        width: 56%;
+        max-width: 200px;
+    }
+    .popup-text   { text-align: center; gap: 10px; line-height: 1.45; }
+    .popup-text p { font-size: 19px; }
+    .popup-text p:first-child { font-size: 21px; }
+    .popup-heart  { width: 52px; height: 52px; margin: 4px auto 12px; }
+}
+
+/* Tiny phones — keep vertical stack, shrink everything just enough */
+@media (max-width: 360px) {
+    .popup        { width: 94vw; }
+    .popup-title  { font-size: 22px; }
+    .popup-deco   { font-size: 12px; }
+    .popup-header { gap: 3px; padding: 8px 10px 7px; }
+    .popup-body   { padding: 14px 14px 10px; gap: 12px; }
+    .popup-photo  { width: 52%; max-width: 175px; }
+    .popup-text   { gap: 8px; line-height: 1.4; }
+    .popup-text p { font-size: 17px; }
+    .popup-text p:first-child { font-size: 19px; }
+    .popup-heart  { width: 46px; height: 46px; margin: 2px auto 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .popup { transition: opacity 0.4s linear; transform: none; }
+    .popup-overlay.is-visible .popup { transform: none; }
+    .popup-heart { animation: none; }
+    .finale-item { animation-duration: 6s, 6s; }
+    .finale-item--photo  { animation-duration: 6s, 6s, 2.8s; }
+    .finale-item--flower { animation-duration: 6s, 6s, 4s; }
+}

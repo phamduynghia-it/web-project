@@ -211,7 +211,17 @@ export default function BuilderClient({ templateId, config }) {
                         hover:file:bg-blue-500 file:transition-colors file:cursor-pointer"
                     />
                     {formData[field.name] && formData[field.name].startsWith("data:") && (
-                      <p className="mt-2 text-xs text-green-400">✓ Đã chọn file ({Math.round(formData[field.name].length / 1024)} KB)</p>
+                      <p className="mt-3 mb-2 text-xs text-green-400">✓ Đã chọn file ({Math.round(formData[field.name].length / 1024)} KB)</p>
+                    )}
+                    {formData[field.name] && (
+                      <div className="mt-2">
+                        {field.type === "image" && (
+                          <img src={formData[field.name]} alt="preview" className="max-h-48 rounded-lg border border-gray-600 object-contain bg-gray-800" />
+                        )}
+                        {field.type === "audio" && (
+                          <audio src={formData[field.name]} controls className="w-full outline-none" />
+                        )}
+                      </div>
                     )}
                   </div>
                 )}

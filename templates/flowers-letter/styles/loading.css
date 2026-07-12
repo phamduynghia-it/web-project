@@ -1,0 +1,117 @@
+/* ===== Phase 0 — Loading wreath ===== */
+#phase-loading {
+    background: radial-gradient(circle at 50% 40%, var(--pink-50) 0%, var(--pink-100) 60%, var(--pink-200) 100%);
+    display: grid;
+    place-items: center;
+    z-index: 100;
+}
+
+.wreath-stage {
+    position: relative;
+    width: 320px;
+    height: 320px;
+}
+
+.wreath {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    animation:
+        wreath-spin 7s linear infinite,
+        wreath-pulse 3.6s ease-in-out infinite;
+    will-change: transform, scale;
+}
+
+.wreath-flower {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 168px;
+    height: 168px;
+    margin: -84px 0 0 -84px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 6px 14px rgba(184, 92, 111, 0.3));
+    transform-origin: 50% 50%;
+    --angle: 0deg;
+    --counter: 0deg;
+    transform: rotate(var(--angle)) translateY(-74px) rotate(var(--counter));
+    animation: wreath-breathe 3.2s ease-in-out infinite;
+}
+
+.wreath-flower:nth-child(1)  { --angle:   0deg; --counter:    0deg; animation-delay: 0s;    }
+.wreath-flower:nth-child(2)  { --angle:  30deg; --counter:  -30deg; animation-delay: 0.25s; }
+.wreath-flower:nth-child(3)  { --angle:  60deg; --counter:  -60deg; animation-delay: 0.5s;  }
+.wreath-flower:nth-child(4)  { --angle:  90deg; --counter:  -90deg; animation-delay: 0.75s; }
+.wreath-flower:nth-child(5)  { --angle: 120deg; --counter: -120deg; animation-delay: 1.0s;  }
+.wreath-flower:nth-child(6)  { --angle: 150deg; --counter: -150deg; animation-delay: 1.25s; }
+.wreath-flower:nth-child(7)  { --angle: 180deg; --counter: -180deg; animation-delay: 1.5s;  }
+.wreath-flower:nth-child(8)  { --angle: 210deg; --counter: -210deg; animation-delay: 1.75s; }
+.wreath-flower:nth-child(9)  { --angle: 240deg; --counter: -240deg; animation-delay: 2.0s;  }
+.wreath-flower:nth-child(10) { --angle: 270deg; --counter: -270deg; animation-delay: 2.25s; }
+.wreath-flower:nth-child(11) { --angle: 300deg; --counter: -300deg; animation-delay: 2.5s;  }
+.wreath-flower:nth-child(12) { --angle: 330deg; --counter: -330deg; animation-delay: 2.75s; }
+
+/* Alternate rose / peony */
+.wreath-flower.is-rose  { background-image: url("../resource_2/pink_rose.webp"); }
+.wreath-flower.is-peony { background-image: url("../resource_2/white_peony.webp"); }
+
+.loading-text {
+    position: absolute;
+    top: calc(100% + 28px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: 23px;
+    letter-spacing: 1px;
+    color: var(--pink-700);
+    font-style: italic;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.4;
+    min-height: 1.5em;
+    width: max-content;
+    max-width: 90vw;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.loading-text.is-swapping { opacity: 0; }
+
+@keyframes wreath-spin {
+    from { rotate: 0deg; }
+    to   { rotate: 360deg; }
+}
+
+@keyframes wreath-pulse {
+    0%, 100% { scale: 1;    }
+    25%      { scale: 0.88; }
+    75%      { scale: 1.12; }
+}
+
+@keyframes wreath-breathe {
+    0%, 100% { transform: rotate(var(--angle)) translateY(-74px) rotate(var(--counter)) scale(1); }
+    50%      { transform: rotate(var(--angle)) translateY(-74px) rotate(var(--counter)) scale(1.03); }
+}
+
+@media (max-width: 480px) {
+    .wreath-stage { width: 240px; height: 240px; }
+    .loading-text { top: calc(100% + 20px); }
+    .wreath-flower {
+        width: 128px; height: 128px;
+        margin: -64px 0 0 -64px;
+        transform: rotate(var(--angle)) translateY(-56px) rotate(var(--counter));
+    }
+    @keyframes wreath-breathe {
+        0%, 100% { transform: rotate(var(--angle)) translateY(-56px) rotate(var(--counter)) scale(1); }
+        50%      { transform: rotate(var(--angle)) translateY(-56px) rotate(var(--counter)) scale(1.03); }
+    }
+    .loading-text { font-size: 18px; letter-spacing: 0.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wreath { animation: wreath-spin 24s linear infinite; }
+    .wreath-flower { animation: none; }
+    .loading-text { transition: none; }
+}

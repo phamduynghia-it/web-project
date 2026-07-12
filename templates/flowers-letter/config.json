@@ -1,0 +1,68 @@
+{
+  "id": "flowers-letter",
+  "name": "Flowers Letter",
+  "description": "Phong bì tình yêu với hiệu ứng mưa hoa và khối trái tim ghép từ hoa cực kì lãng mạn.",
+  "price": "Free",
+  "previewImage": "/thumbnails/flowers-letter.jpg",
+  "fields": [
+    {
+      "name": "sender",
+      "label": "Tên người gửi (Màn hình khoá)",
+      "type": "text",
+      "default": "Anh iu"
+    },
+    {
+      "name": "recipient",
+      "label": "Tên người nhận (Màn hình khoá)",
+      "type": "text",
+      "default": "Bảo Hân"
+    },
+    {
+      "name": "pinCode",
+      "label": "Mật khẩu mở khoá (4 số)",
+      "type": "text",
+      "default": "1234"
+    },
+    {
+      "name": "title",
+      "label": "Tiêu đề chính (Trên vỏ thiệp)",
+      "type": "text",
+      "default": "To my love"
+    },
+    {
+      "name": "cardCoverDeco",
+      "label": "Dòng trang trí nhỏ phía trên tiêu đề",
+      "type": "text",
+      "default": "✿ ❤ ✿"
+    },
+    {
+      "name": "forYouLine",
+      "label": "Dòng chữ hiển thị khi hoa rơi",
+      "type": "text",
+      "default": "Gửi yêu thương đến bé ngốc ❤"
+    },
+    {
+      "name": "popupMessage",
+      "label": "Nội dung bức thư",
+      "type": "textarea",
+      "default": "Gửi bé ngốc của anh ❤\nMỗi bông hoa trong khu vườn nhỏ này là dành cho em — cho sự dịu dàng, cho nụ cười, và cho từng khoảnh khắc bình yên mình có cùng nhau.\nYêu em thật nhiều hehe ❤️"
+    },
+    {
+      "name": "images",
+      "label": "Ảnh kỉ niệm (3 ảnh hiển thị lúc hoa bay lên)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "popupPhoto",
+      "label": "Ảnh nổi bật hiển thị bên trong bức thư",
+      "type": "image",
+      "default": ""
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}

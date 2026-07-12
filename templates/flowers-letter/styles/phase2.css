@@ -1,0 +1,516 @@
+/* ===== Phase 2 — Envelope opens + flowers ===== */
+#phase-2 {
+    background: radial-gradient(ellipse at 50% 80%, var(--tan-200) 0%, var(--tan-400) 70%, #a98775 100%);
+    overflow: hidden;
+    z-index: 60;
+}
+
+/* The flower stage covers the whole screen, envelope sits at center.
+   Flowers (z-index 20) render IN FRONT of the envelope (z-index 10) so the
+   burst visually covers and then reveals it as flowers fall and fade away.
+   Rain uses a SECOND stage (#rainStage, z-index 25) so its compositor
+   context is isolated from the fountain — mass-spawning rain layers won't
+   evict fountain layers (which was making the fountain "disappear"). */
+.flower-stage {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    contain: layout style paint;
+    z-index: 20;
+}
+#rainStage { z-index: 25; }
+
+/* Spawned flowers (created by JS). No filters → GPU stays cheap with ~400 elements.
+   NOTE: no will-change here. CSS animations on transform+opacity auto-promote to
+   compositor layers WHEN the animation actually runs, instead of forcing all 400+
+   layers to be allocated up-front (which was exhausting GPU memory on desktop). */
+.flower {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--flower-size, 100px);
+    height: var(--flower-size, 100px);
+    margin-left: calc(-1 * var(--flower-size, 100px) / 2);
+    margin-top: calc(-1 * var(--flower-size, 100px) / 2);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0;
+    /* Stabilise GPU layers when fountain + rain are both at peak. Without
+       these hints, layers occasionally demote → re-promote between frames,
+       which shows as a 1-frame "flash to invisible" = the flicker. */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Depth via z-index only (no blur — keeps composite layers cheap) */
+.flower--fg  { z-index: 3; }
+.flower--mid { z-index: 2; }
+.flower--bg  { z-index: 1; }
+
+/* Fountain layer classes (fg/mid/bg) — explicitly hint the compositor to
+   promote these as their own GPU layers. anime.js drives transform/opacity
+   via JS-set inline styles each frame; without this hint, the browser
+   sometimes does NOT promote them to compositor layers (or promotes them
+   weakly), and they get evicted when rain mass-spawns its ~300 CSS-animated
+   layers a few seconds later. Safe to use here because spawnFlower creates
+   elements lazily and removes them on complete — at any moment only the
+   in-flight subset is in the DOM (≤320), not the historical 400+ that
+   caused the original GPU memory blowup. */
+.flower--fg,
+.flower--mid,
+.flower--bg {
+    will-change: transform, opacity;
+}
+
+/* Rain flowers — z-index 10 always above fountain.
+   Split into 3 parallel animations on the individual transform properties
+   (translate / rotate / opacity) — same pattern as fountain. Compared to
+   the old single `transform: translate() rotate()` shorthand keyframe,
+   each property now runs as its own compositor animation: the browser
+   skips the per-frame parse of the combined transform string and composes
+   the matrix from already-resolved property values. With ~320 rain layers
+   active, that per-frame saving frees up compositor budget so the
+   envelope (and other animating elements) don't stutter while rain
+   passes over them. */
+.flower--rain {
+    z-index: 10;
+    animation:
+        rain-translate var(--rdur, 10s) linear var(--rdelay, 0s) forwards,
+        rain-rotate    var(--rdur, 10s) linear var(--rdelay, 0s) forwards,
+        rain-opacity   var(--rdur, 10s) linear var(--rdelay, 0s) forwards;
+}
+
+@keyframes rain-translate {
+    /* Y falls linearly. X drifts from start to end with TWO full sine
+       wobble cycles (peaks at 12.5 / 37.5 / 62.5 / 87.5 %) so the flower
+       sways left-right twice during its fall — much more pronounced than
+       a single half-cycle. Amplitude = --wob-x; sign is randomised per
+       flower in JS so some sway right-first and some left-first. */
+    0%    { translate: var(--rx-start, 0) var(--ry-start, -100vh); }
+    12.5% { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.125 + var(--wob-x, 0px))
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.125); }
+    25%   { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.250)
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.250); }
+    37.5% { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.375 - var(--wob-x, 0px))
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.375); }
+    50%   { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.500)
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.500); }
+    62.5% { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.625 + var(--wob-x, 0px))
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.625); }
+    75%   { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.750)
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.750); }
+    87.5% { translate: calc(var(--rx-start, 0) + (var(--rx-end, 0) - var(--rx-start, 0)) * 0.875 - var(--wob-x, 0px))
+                        calc(var(--ry-start, 0) + (var(--ry-end, 0) - var(--ry-start, 0)) * 0.875); }
+    100%  { translate: var(--rx-end, 0) var(--ry-end, 100vh); }
+}
+
+@keyframes rain-rotate {
+    /* Rotation oscillates in PHASE with the X wobble — when the flower
+       sways right (+wob-x) it also tilts right (+rot-tilt), so the petal
+       visually leans into its motion like it's being blown by wind.
+       Baseline rotates rot-start → rot-end linearly across the fall. */
+    0%    { rotate: var(--rot-start, 0deg); }
+    12.5% { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.125 + var(--rot-tilt, 0deg)); }
+    25%   { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.250); }
+    37.5% { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.375 - var(--rot-tilt, 0deg)); }
+    50%   { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.500); }
+    62.5% { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.625 + var(--rot-tilt, 0deg)); }
+    75%   { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.750); }
+    87.5% { rotate: calc(var(--rot-start, 0deg) + (var(--rot-end, 0deg) - var(--rot-start, 0deg)) * 0.875 - var(--rot-tilt, 0deg)); }
+    100%  { rotate: var(--rot-end, 0deg); }
+}
+
+@keyframes rain-opacity {
+    0%   { opacity: 0; }
+    5%   { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+/* Fountain flowers — 4 parallel CSS animations on the modern individual
+   transform properties (translate / scale / rotate). Running each property
+   as its own animation lets every property carry its own easing curve, so
+   the visual matches the previous anime.js version exactly:
+       • Rise 0→30% uses easeOutSine on translate (X+Y matched).
+       • Fall 30→100% uses easeInOutSine on X (smooth drift) but easeInQuad
+         on Y (gravity acceleration). Because `translate` is one property,
+         the per-axis easing is pre-baked into the keyframes via calc()
+         sample points (every 10%) → linear interp between samples ≈ the
+         original smooth curves.
+       • Scale has an overshoot at 18% (1.06) then settles to 1.
+       • Rotate is one easeInOutSine arc over the whole duration.
+       • Opacity: fade in 10% / hold 78% / fade out 12% (flower stays opaque
+         until it crosses the viewport bottom).
+   CSS animations on these properties run on the compositor thread, so
+   the layer shares the GPU budget cleanly with rain — no eviction, no
+   flicker like the anime.js inline-style path. */
+.flower--fountain {
+    animation:
+        fountain-translate var(--fdur, 8s) linear var(--fdelay, 0s) forwards,
+        fountain-scale     var(--fdur, 8s) linear var(--fdelay, 0s) forwards,
+        fountain-rotate    var(--fdur, 8s) cubic-bezier(0.445, 0.05, 0.55, 0.95) var(--fdelay, 0s) forwards,
+        fountain-opacity   var(--fdur, 8s) linear var(--fdelay, 0s) forwards;
+}
+
+@keyframes fountain-translate {
+    /* Rise 0-30% — easeOutSine; X and Y move in lockstep */
+    0%   { translate: 0 0; }
+    10%  { translate: calc(var(--fpeak-x, 0px) * 0.500)
+                       calc(var(--fpeak-y, 0px) * 0.500); }
+    20%  { translate: calc(var(--fpeak-x, 0px) * 0.866)
+                       calc(var(--fpeak-y, 0px) * 0.866); }
+    30%  { translate: var(--fpeak-x, 0px) var(--fpeak-y, 0px); }
+    /* Fall 30-100% — X uses easeInOutSine factors, Y uses easeInQuad factors */
+    40%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.050)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.020); }
+    50%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.189)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.082); }
+    60%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.389)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.184); }
+    70%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.611)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.327); }
+    80%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.811)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.510); }
+    90%  { translate: calc(var(--fpeak-x, 0px) + (var(--fend-x, 0px) - var(--fpeak-x, 0px)) * 0.951)
+                       calc(var(--fpeak-y, 0px) + (var(--fend-y, 0px) - var(--fpeak-y, 0px)) * 0.735); }
+    100% { translate: var(--fend-x, 0px) var(--fend-y, 0px); }
+}
+
+@keyframes fountain-scale {
+    0%   { scale: 0;    animation-timing-function: cubic-bezier(0.34, 1.3, 0.64, 1); }    /* overshoot in */
+    18%  { scale: 1.06; animation-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955); } /* easeInOutQuad */
+    100% { scale: 1; }
+}
+
+@keyframes fountain-rotate {
+    0%   { rotate: 0deg; }
+    100% { rotate: var(--frot, 0deg); }
+}
+
+@keyframes fountain-opacity {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* "For my love" text — bottom centered, on top of flowers */
+.for-you {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: min(92vw, 720px);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--cream);
+    text-shadow: 0 4px 18px rgba(80, 40, 30, 0.4);
+    letter-spacing: 2px;
+    text-align: center;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    padding: 0 12px;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-in-out), transform 1.2s var(--ease-out-strong);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.for-you.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-6px);
+}
+
+@media (max-width: 600px) {
+    .for-you {
+        font-size: 24px;
+        letter-spacing: 1.2px;
+        max-width: 94vw;
+        bottom: 6%;
+    }
+}
+
+@media (max-width: 380px) {
+    .for-you {
+        font-size: 20px;
+        letter-spacing: 0.8px;
+    }
+}
+
+/* ===== Envelope (reused & restyled) ===== */
+.envelope-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.envelope {
+    width: 300px;
+    height: 200px;
+    background-color: #fff;
+    display: grid;
+    place-content: center;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(184, 92, 111, 0.5), 0 18px 40px rgba(80, 40, 30, 0.25);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.6s ease, transform 0.8s var(--ease-out-strong);
+    /* Promote to its own compositor layer so the rain flowers (which spawn
+       hundreds of GPU layers passing over the envelope) don't force the
+       browser to repaint the envelope + its 40px box-shadow every frame.
+       With the layer cached as a bitmap, compositing rain over it is just
+       a cheap GPU blend → no more jitter when rain crosses the envelope. */
+    will-change: transform;
+}
+
+.envelope.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Rumble / shake — gentle anticipation before the flowers burst. Subtle
+   translate + tiny scale pulse + micro-rotation = "envelope is humming with
+   life" instead of "envelope is being shaken violently". */
+.envelope.is-shaking {
+    animation: envelope-shake 0.8s ease-in-out;
+    transform-origin: center;
+}
+
+@keyframes envelope-shake {
+    0%, 100% { transform: scale(1) translateX(0) rotate(0deg); }
+    15%      { transform: scale(1.015) translateX(-3px) rotate(-0.6deg); }
+    30%      { transform: scale(1.02)  translateX(3px)  rotate(0.6deg); }
+    45%      { transform: scale(1.025) translateX(-3px) rotate(-0.6deg); }
+    60%      { transform: scale(1.02)  translateX(3px)  rotate(0.5deg); }
+    75%      { transform: scale(1.015) translateX(-2px) rotate(-0.3deg); }
+    90%      { transform: scale(1.01)  translateX(1px); }
+}
+
+/* Idle breathing — gentle motion while the flowers burst + fall.
+   Subtle scale pulse + drift + micro rotation so the envelope feels alive,
+   not frozen. Runs in an infinite loop and is removed before is-open kicks in. */
+.envelope.is-idle {
+    animation: envelope-idle 3.6s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes envelope-idle {
+    0%, 100% { transform: scale(1)     translateY(0)    rotate(0deg); }
+    25%      { transform: scale(1.018) translateY(-3px) rotate(-0.5deg); }
+    50%      { transform: scale(1.01)  translateY(2px)  rotate(0deg); }
+    75%      { transform: scale(1.018) translateY(-3px) rotate(0.5deg); }
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: 75px solid transparent;
+    border-right: 150px solid white;
+    border-bottom: 125px solid white;
+    border-left: 150px solid white;
+    pointer-events: none;
+}
+
+.envelope.is-open .card-wrapper {
+    animation: show-card 1000ms 600ms forwards;
+}
+
+.card-wrapper {
+    perspective: 1000px;
+    transform: rotate(-90deg);
+    z-index: 0;
+}
+
+.card {
+    width: 180px;
+    height: 280px;
+    background-color: #fff;
+    border: 1px solid rgba(184, 92, 111, 0.4);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 250ms;
+    box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.envelope.is-open .card {
+    transform: rotateY(-15deg);
+    transition-delay: 1750ms;
+}
+
+.card-cover {
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transition: transform 500ms 0ms;
+}
+
+.envelope.is-open .card-cover {
+    transform: rotateY(-135deg);
+    transition-delay: 2250ms;
+}
+
+.card-side {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background-color: #fff;
+    display: grid;
+    place-items: center;
+}
+
+.card-side-secondary {
+    background-color: #fff;
+    transform: rotateY(180deg);
+    box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+    position: relative;
+    font-weight: 300;
+    text-align: center;
+    user-select: none;
+    color: var(--pink-900);
+}
+
+.card-title span { display: block; }
+
+.card-title-secondary {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.card-title-main {
+    font-family: var(--font-script);
+    font-size: 56px;
+    font-weight: 400;
+    color: var(--pink-700);
+}
+
+.card-title-apostrophe {
+    position: absolute;
+    top: 32px;
+    right: 8px;
+    font-size: 8px;
+}
+
+.card-body {
+    font-family: "Shantell Sans", serif;
+    padding: 14px;
+    color: var(--pink-900);
+}
+
+.card-body p {
+    font-size: 10px;
+    font-weight: 300;
+    /* Cắt thư dài quá 2 dòng → hiện "…" để không tràn ra khỏi card */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-body p + p { margin-top: 10px; }
+
+/* Envelope lid */
+.envelope-lid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.envelope-lid::before,
+.envelope-lid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: calc(100% - 31.85px);
+    background-color: rgba(184, 92, 111, 0.4);
+}
+
+.envelope-lid::before { left: 0;  transform: rotate(-63.1deg); transform-origin: top left; }
+.envelope-lid::after  { right: 0; transform: rotate(63.1deg);  transform-origin: top right; }
+
+.envelope-lid-secondary {
+    background-color: #fff;
+    clip-path: polygon(50% 38%, 0 0, 100% 0);
+    transition: transform 500ms 1000ms;
+    transform-origin: top;
+}
+
+.envelope.is-open .envelope-lid-secondary {
+    transform: rotateX(180deg);
+    transition-delay: 100ms;
+    animation: open-lid-stacking 500ms forwards;
+}
+
+@keyframes show-card {
+    50%  { transform: translateY(-75%) rotate(-90deg); z-index: -1; }
+    100% { transform: translateY(0) rotate(0deg);     z-index: 10; }
+}
+
+@keyframes open-lid-stacking {
+    50%  { z-index: 1; }
+    100% { z-index: -1; }
+}
+
+/* Heart seal — CSS-drawn wax heart, visible only at start of phase 2 */
+.heart-seal {
+    position: absolute;
+    top: 37%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 32px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 28'><defs><radialGradient id='g' cx='40%25' cy='35%25' r='70%25'><stop offset='0%25' stop-color='%23ff8ea3'/><stop offset='60%25' stop-color='%23d4334e'/><stop offset='100%25' stop-color='%238f1a30'/></radialGradient></defs><path fill='url(%23g)' d='M16 27S2.5 18.5 2.5 9.5C2.5 5 6 2 9.5 2 12 2 14 3.5 16 6c2-2.5 4-4 6.5-4C26 2 29.5 5 29.5 9.5 29.5 18.5 16 27 16 27z'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    filter: drop-shadow(0 2px 3px rgba(120, 30, 50, 0.45));
+}
+
+.envelope.is-open .heart-seal { opacity: 0; }
+
+/* When the burst happens, the envelope fades & shrinks away so flowers take over */
+.envelope.is-dispersing {
+    animation: envelope-disperse 1.4s var(--ease-out-strong) forwards;
+}
+
+@keyframes envelope-disperse {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0px); }
+    100% { opacity: 0; transform: scale(0.6); filter: blur(6px); }
+}
+
+/* Mobile envelope sizing */
+@media (max-width: 480px) {
+    .envelope { width: 240px; height: 160px; }
+    .envelope::after {
+        border-top-width: 60px;
+        border-right-width: 120px;
+        border-bottom-width: 100px;
+        border-left-width: 120px;
+    }
+    .card { width: 150px; height: 230px; }
+    .card-title-main { font-size: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .envelope, .envelope.is-visible { transition: opacity 0.4s linear; transform: none; }
+    .envelope.is-dispersing { animation-duration: 0.5s; }
+    .for-you { transition: opacity 0.4s linear; }
+}

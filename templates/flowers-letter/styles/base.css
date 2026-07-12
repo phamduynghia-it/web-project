@@ -1,0 +1,164 @@
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* Chặn double-tap zoom + pinch zoom của iOS Safari (viewport meta
+       một mình không đủ trên iOS 13+) */
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ép luôn touch-action: manipulation lên mọi vùng tương tác chính
+   để iOS Safari không phát hiện double-tap zoom dù tap nhanh 2 lần */
+.app-phase,
+.app-phase * {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Design tokens ===== */
+:root {
+    /* Loading & soft pinks */
+    --pink-50:  #FFF5F7;
+    --pink-100: #FFE6EC;
+    --pink-200: #FFD0DA;
+    --pink-300: #F7B6C2;
+    --pink-500: #E89AAB;
+    --pink-700: #B85C6F;
+    --pink-900: #7a3a48;
+
+    /* Phase 2 — warm tan */
+    --tan-200: #E8D4C5;
+    --tan-400: #C9A99A;
+    --tan-600: #8d6f5e;
+    --cream:   #fff7ef;
+
+    /* Fonts */
+    --font-display: "Cormorant Garamond", "Petemoss", serif;
+    --font-script:  "Petemoss", "Shantell Sans", cursive;
+    --font-ui:      "Roboto", system-ui, sans-serif;
+
+    /* Timing */
+    --ease-out-strong: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+body {
+    font-family: var(--font-ui);
+    /* Tan-400 matches the middle of the Phase 2 gradient → any GPU
+       composite hiccup during the rain shows a tan colour instead of
+       flashing white through the page background. */
+    background: var(--tan-400);
+    color: var(--pink-900);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html { background: var(--tan-400); }
+
+/* ===== App phases visibility ===== */
+.app-phase {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s var(--ease-in-out);
+}
+
+.app-phase.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* prevent text selection across the whole experience */
+.app-phase,
+.app-phase * {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Utility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ===== Music Toggle Button ===== */
+#musicToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(185, 28, 28, 0.3));
+    border: 2px solid rgba(220, 38, 38, 0.6);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4), 0 0 20px rgba(220, 38, 38, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0;
+}
+
+#musicToggle svg {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+
+#musicToggle:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.4), rgba(220, 38, 38, 0.5));
+    border-color: rgba(239, 68, 68, 0.9);
+    box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6), 0 0 30px rgba(239, 68, 68, 0.4);
+    transform: scale(1.1);
+}
+
+#musicToggle:active {
+    transform: scale(0.95);
+}
+
+@keyframes pulse-heart {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4), 0 0 20px rgba(220, 38, 38, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6), 0 0 30px rgba(239, 68, 68, 0.4);
+    }
+}
+
+#musicToggle.playing {
+    animation: pulse-heart 2s ease-in-out infinite;
+}
+
+#musicToggle .icon-pause { display: none; }
+#musicToggle.playing .icon-play { display: none; }
+#musicToggle.playing .icon-pause { display: block; }
+
+@media (max-width: 480px) {
+    #musicToggle { top: 14px; right: 14px; width: 48px; height: 48px; }
+}

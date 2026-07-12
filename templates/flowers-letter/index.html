@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- SEO Meta Tags -->
+    <title>Thiệp Tình Yêu — Phong Bì Hoa & Trái Tim ❤</title>
+    <meta name="description" content="Mở phong bì tình yêu — ngắm cơn mưa hoa bùng nổ, đọc lời nhắn viết tay, rồi xem hàng trăm bông hoa hợp lại thành hình trái tim đập nhịp. Một thiệp valentine tương tác dành riêng cho người thương.">
+    <meta name="keywords" content="thiệp tình yêu, thiệp valentine, phong bì tình yêu, mưa hoa, hình trái tim, thiệp tương tác, thiệp lãng mạn, lời yêu thương, tỏ tình online, love card">
+    <meta name="author" content="Thiệp Tình Yêu">
+    <meta name="robots" content="index, follow">
+
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="Thiệp Tình Yêu — Phong Bì Hoa & Trái Tim ❤">
+    <meta property="og:description" content="Mở phong bì, ngắm cơn mưa hoa, đọc lời nhắn viết tay và xem hàng trăm bông hoa hợp thành hình trái tim đập nhịp — một thiệp valentine tương tác dành cho người thương.">
+    <meta property="og:image" content="https://cdn.shopify.com/s/files/1/0757/9700/4572/files/tim.png?v=1767367148">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Thiệp Tình Yêu — Phong bì mở ra cơn mưa hoa và trái tim">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Thiệp Tình Yêu — Phong Bì Hoa & Trái Tim ❤">
+    <meta name="twitter:description" content="Mở phong bì, ngắm cơn mưa hoa, đọc lời nhắn viết tay và xem hàng trăm bông hoa hợp thành hình trái tim đập nhịp — thiệp valentine tương tác cho người thương.">
+    <meta name="twitter:image" content="https://cdn.shopify.com/s/files/1/0757/9700/4572/files/tim.png?v=1767367148">
+    <meta name="twitter:image:alt" content="Thiệp Tình Yêu — Phong bì mở ra cơn mưa hoa và trái tim">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#FFB6C1">
+    <meta name="msapplication-navbutton-color" content="#FFB6C1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#FFB6C1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://cdn.shopify.com/s/files/1/0757/9700/4572/files/tim.png?v=1767367148" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Petemoss&family=Quicksand:wght@400;500;600&family=Roboto:wght@300;400;500&family=Shantell+Sans:wght@300;400&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/loading.css">
+    <link rel="stylesheet" href="styles/phase1.css">
+    <link rel="stylesheet" href="styles/phase2.css">
+    <link rel="stylesheet" href="styles/phase3.css">
+    
+    <script src="./anti-devtools.js"></script>
+</head>
+<body>
+
+    <!-- ============ MUSIC TOGGLE ============ -->
+    <button id="musicToggle" type="button" aria-label="Bật/tắt nhạc nền" title="Bật/tắt nhạc nền">
+        <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" opacity=".35"/>
+            <path d="M9.5 9h1.5v6H9.5zM13 9h1.5v6H13z" fill="#fff"/>
+        </svg>
+    </button>
+    <audio id="bgMusic" loop preload="auto">
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <!-- ============ PHASE 0 — LOADING ============ -->
+    <section id="phase-loading" class="app-phase is-active" aria-label="Loading">
+        <div class="wreath-stage">
+            <div class="wreath" role="status" aria-live="polite">
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-peony"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-peony"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-peony"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-rose"></span>
+                <span class="wreath-flower is-peony"></span>
+            </div>
+            <div class="loading-text">Yêu thương đang gõ cửa…</div>
+        </div>
+    </section>
+
+    <!-- ============ PHASE 1 — PIN LOCK ============ -->
+    <section id="phase-1" class="app-phase" aria-label="Lock screen">
+        <div class="lock-frame" id="lockFrame">
+            <div class="lock-info">
+                <div class="lock-info-row"><span class="label">From:</span> Anh iu</div>
+                <div class="lock-info-row"><span class="label">For:</span> bé ngốc</div>
+                <div class="lock-info-pin">Mã PIN</div>
+                <div class="pin-hearts" id="pinHearts" aria-label="PIN indicator">
+                    <span class="pin-heart"></span>
+                    <span class="pin-heart"></span>
+                    <span class="pin-heart"></span>
+                    <span class="pin-heart"></span>
+                </div>
+            </div>
+
+            <div class="keypad" id="keypad" role="group" aria-label="PIN keypad">
+                <button class="keypad-btn" data-key="1">1</button>
+                <button class="keypad-btn" data-key="2">2</button>
+                <button class="keypad-btn" data-key="3">3</button>
+                <button class="keypad-btn" data-key="4">4</button>
+                <button class="keypad-btn" data-key="5">5</button>
+                <button class="keypad-btn" data-key="6">6</button>
+                <button class="keypad-btn" data-key="7">7</button>
+                <button class="keypad-btn" data-key="8">8</button>
+                <button class="keypad-btn" data-key="9">9</button>
+                <button class="keypad-btn is-action" data-key="clear" aria-label="Clear">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
+                </button>
+                <button class="keypad-btn" data-key="0">0</button>
+                <button class="keypad-btn is-action" data-key="backspace" aria-label="Backspace">
+                    <svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PHASE 2 — ENVELOPE OPENS + FLOWERS ============ -->
+    <section id="phase-2" class="app-phase" aria-label="Bouquet">
+        <div class="flower-stage" id="flowerStage" aria-hidden="true"></div>
+
+        <div class="envelope-stage">
+            <div class="envelope" id="envelope">
+                <div class="envelope-lid"></div>
+                <div class="envelope-lid envelope-lid-secondary"></div>
+                <div class="card-wrapper">
+                    <div class="card">
+                        <div class="card-cover">
+                            <div class="card-side card-side-primary">
+                                <h1 class="card-title">
+                                    <span class="card-title-secondary">✿ ❤ ✿</span>
+                                    <span class="card-title-main">To my love</span>
+                                    <span class="card-title-secondary">~ bé ngốc ~</span>
+                                </h1>
+                            </div>
+                            <div class="card-side card-side-secondary"></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Gửi bé ngốc của anh ❤</p>
+                            <p>Mỗi bông hoa trong khu vườn nhỏ này là dành cho em — cho sự dịu dàng, cho nụ cười, và cho từng khoảnh khắc bình yên mình có cùng nhau.</p>
+                            <p>Yêu em thật nhiều ❤️</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="heart-seal"></div>
+            </div>
+        </div>
+
+        <div class="for-you" id="forYou">Gửi yêu thương đến bé ngốc ❤</div>
+
+        <!-- Finale stage — love photos + flowers float up after popup is dismissed -->
+        <div class="finale-stage" id="finaleStage" aria-hidden="true"></div>
+
+        <!-- Popup shown after envelope opens; click X (or backdrop) to dismiss → triggers finale -->
+        <div class="popup-overlay" id="popupOverlay" aria-hidden="true">
+            <div class="popup" id="popup" role="dialog" aria-label="To my love">
+                <button class="popup-close" id="popupClose" type="button" aria-label="Đóng">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </button>
+                <div class="popup-header">
+                    <span class="popup-deco">✦</span>
+                    <span class="popup-deco">❤</span>
+                    <span class="popup-deco">✿</span>
+                    <h2 class="popup-title">To my love</h2>
+                    <span class="popup-deco">✿</span>
+                    <span class="popup-deco">❤</span>
+                    <span class="popup-deco">✦</span>
+                </div>
+                <div class="popup-body">
+                    <div class="popup-photo">
+                        <img src="images/love2.jpeg" alt="" draggable="false">
+                    </div>
+                    <div class="popup-text">
+                        <p>Gửi bé ngốc của anh ❤</p>
+                        <p>Mỗi bông hoa trong khu vườn nhỏ này là dành cho em — cho sự dịu dàng, cho nụ cười, và cho từng khoảnh khắc bình yên mình có cùng nhau.</p>
+                    </div>
+                </div>
+                <button class="popup-heart" id="popupHeart" type="button" aria-label="Mở khu vườn yêu thương">
+                    <img src="icons/heart.png" alt="" draggable="false">
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- anime.js (animation library) -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+
+    <script src="config.js"></script>
+    <script src="scripts/data-loader.js"></script>
+    <script src="scripts/flowers.js"></script>
+    <script src="scripts/loading.js"></script>
+    <script src="scripts/phase1.js"></script>
+    <script src="scripts/phase2.js"></script>
+    <script src="scripts/phase3.js"></script>
+    <script src="scripts/app.js"></script>
+
+    <!-- Music Toggle Logic -->
+    <script>
+        (function () {
+            const btn = document.getElementById('musicToggle');
+            const audio = document.getElementById('bgMusic');
+            if (!btn || !audio) return;
+
+            audio.volume = 0.55;
+            let ready = false;
+
+            function play() {
+                if (!ready) return;
+                audio.play().then(() => {
+                    btn.classList.add('playing');
+                }).catch(() => {
+                    btn.classList.remove('playing');
+                });
+            }
+
+            function pause() {
+                audio.pause();
+                btn.classList.remove('playing');
+            }
+
+            btn.addEventListener('click', () => {
+                if (audio.paused) play();
+                else pause();
+            });
+
+            // Đợi AppData nạp xong music src rồi mới cho phép autoplay trên tương tác
+            const waitData = (window.AppData && window.AppData.ready) || Promise.resolve();
+            waitData.then(() => {
+                ready = true;
+                function tryAutoStart() {
+                    if (audio.paused) play();
+                    document.removeEventListener('pointerdown', tryAutoStart);
+                    document.removeEventListener('keydown', tryAutoStart);
+                }
+                document.addEventListener('pointerdown', tryAutoStart);
+                document.addEventListener('keydown', tryAutoStart);
+            });
+
+            audio.addEventListener('play', () => btn.classList.add('playing'));
+            audio.addEventListener('pause', () => btn.classList.remove('playing'));
+        })();
+    </script>
+</body>
+</html>
