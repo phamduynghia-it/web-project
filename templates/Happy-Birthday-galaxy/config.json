@@ -1,0 +1,53 @@
+{
+  "id": "Happy-Birthday-galaxy",
+  "name": "Happy Birthday Galaxy",
+  "description": "Hộp quà sinh nhật bất ngờ, bánh sinh nhật 3D, album ảnh kỷ niệm lật mở chân thực và mưa sao băng.",
+  "price": "Free",
+  "previewImage": "/thumbnails/Happy-Birthday-galaxy.jpg",
+  "fields": [
+    {
+      "name": "recipientName",
+      "label": "Tên người nhận (Màn hình bánh sinh nhật)",
+      "type": "text",
+      "default": "My Love"
+    },
+    {
+      "name": "bookImages",
+      "label": "Ảnh kỉ niệm trong album lật (nên để số chẵn ảnh)",
+      "type": "image-array",
+      "default": []
+    },
+    {
+      "name": "letterTitle",
+      "label": "Tiêu đề thư",
+      "type": "text",
+      "default": "Em yêu à,"
+    },
+    {
+      "name": "letterBody",
+      "label": "Nội dung bức thư",
+      "type": "textarea",
+      "default": "Hôm nay là một ngày vô cùng đặc biệt - ngày mà một người tuyệt vời như em xuất hiện trên thế giới này. Anh chỉ muốn nói rằng, gặp được em là điều may mắn nhất trong cuộc đời anh.\n\nChúc em luôn xinh đẹp, hạnh phúc và mãi ở bên anh như bây giờ. Dù sau này có chuyện gì xảy ra, anh vẫn sẽ luôn nắm tay em thật chặt."
+    },
+    {
+      "name": "letterSignature",
+      "label": "Chữ ký người gửi",
+      "type": "text",
+      "default": "Yêu em nhiều hơn mỗi ngày."
+    },
+    {
+      "name": "finalWishes",
+      "label": "Những lời chúc bay lên ở màn hình cuối",
+      "type": "text-array",
+      "default": [
+        "Duy Nghĩa", 
+        "Test"
+      ]
+    },
+    {
+      "name": "music",
+      "label": "Nhạc nền (File MP3)",
+      "type": "audio"
+    }
+  ]
+}
